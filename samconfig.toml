@@ -8,3 +8,4 @@ s3_prefix = "s3-uploader"
 region = "eu-central-1"
 capabilities = "CAPABILITY_IAM"
 image_repositories = []
+parameter_overrides = "UserPoolId=\"eu-central-1_L8jkGP4ve\" Audience=\"5rkm868lb75gf9jek6lpccl1r5\""

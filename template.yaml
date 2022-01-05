@@ -5,6 +5,14 @@ Description: >
 
   Sample SAM Template for s3-upload-api
 
+Parameters:
+  UserPoolId:
+    Type: String
+    Description: User poolID for Cognito provider
+  Audience:
+    Type: String
+    Description: Client id for user pool
+
 Globals:
   Function:
     Timeout: 20
@@ -13,18 +21,23 @@ Resources:
   MyApi:
     Type: AWS::Serverless::HttpApi
     Properties:
+      Auth:
+        Authorizers:
+          GeneralAuth:
+            AuthorizationScopes:
+              - email
+            IdentitySource: "$request.header.Authorization"
+            JwtConfiguration:
+              issuer: !Sub https://cognito-idp.${AWS::Region}.amazonaws.com/${UserPoolId}
+              audience:
+                - !Ref Audience
       # CORS configuration - this is open for development only and should be restricted in prod.
       # See https://docs.aws.amazon.com/serverless-application-model/latest/developerguide/sam-property-httpapi-httpapicorsconfiguration.html
       CorsConfiguration:
         AllowMethods:
           - GET
-          - POST
-          - DELETE
-          - OPTIONS
-        AllowHeaders:
-          - "*"
         AllowOrigins:
-          - "*"
+          - http://localhost:8080
 
   HelloWorldFunction:
     Type: AWS::Serverless::Function # More info about Function Resource: https://github.com/awslabs/serverless-application-model/blob/master/versions/2016-10-31.md#awsserverlessfunction
@@ -46,6 +59,8 @@ Resources:
         UploadAssetAPI:
           Type: HttpApi
           Properties:
+            Auth:
+              Authorizer: GeneralAuth
             Path: /uploads
             Method: get
             ApiId: !Ref MyApi
@@ -80,4 +95,4 @@ Outputs:
     Value: !GetAtt HelloWorldFunctionRole.Arn
   S3UploadBucketName:
     Description: "S3 bucket for application uploads"
-    Value: !Ref 'S3UploadBucket'
+    Value: !Ref "S3UploadBucket"
