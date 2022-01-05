@@ -1,0 +1,5 @@
+.aws-sam
+.idea
+.vscode
+HelloWorldFunction/target
+HelloWorldFunction/*.iml
