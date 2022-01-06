@@ -10,6 +10,7 @@ import com.amazonaws.services.lambda.runtime.RequestHandler;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyRequestEvent;
 import com.amazonaws.services.lambda.runtime.events.APIGatewayProxyResponseEvent;
 
+import software.amazon.awssdk.regions.Region;
 import software.amazon.awssdk.services.s3.model.PutObjectRequest;
 import software.amazon.awssdk.services.s3.presigner.S3Presigner;
 import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
@@ -21,8 +22,9 @@ public class App implements RequestHandler<APIGatewayProxyRequestEvent, APIGatew
 
     private static final String BUCKET_NAME = System.getenv("BUCKET_NAME");
     private static final String URL_EXPIRATION_SECONDS = System.getenv("URL_EXPIRATION_SECONDS");
+    private static final String REGION = System.getenv("A_REGION");
 
-    private final S3Presigner presigner = S3Presigner.builder().build();
+    private final S3Presigner presigner = S3Presigner.builder().region(Region.of(REGION)).build();
 
     public APIGatewayProxyResponseEvent handleRequest(final APIGatewayProxyRequestEvent input, final Context context) {
 

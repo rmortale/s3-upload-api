@@ -52,6 +52,7 @@ Resources:
         Variables:
           BUCKET_NAME: !Ref S3UploadBucket
           URL_EXPIRATION_SECONDS: 300
+          A_REGION: !Sub ${AWS::Region}
       Policies:
         - S3WritePolicy:
             BucketName: !Ref S3UploadBucket
