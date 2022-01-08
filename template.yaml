@@ -62,7 +62,7 @@ Resources:
           Properties:
             Auth:
               Authorizer: GeneralAuth
-            Path: /uploads
+            Path: /
             Method: get
             ApiId: !Ref MyApi
 
@@ -87,7 +87,7 @@ Outputs:
   # https://github.com/awslabs/serverless-application-model/blob/master/docs/internals/generated_resources.rst#api
   HelloWorldApi:
     Description: "API Gateway endpoint URL for Prod stage for Hello World function"
-    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com/uploads"
+    Value: !Sub "https://${MyApi}.execute-api.${AWS::Region}.amazonaws.com"
   HelloWorldFunction:
     Description: "Hello World Lambda Function ARN"
     Value: !GetAtt HelloWorldFunction.Arn
